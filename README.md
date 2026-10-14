@@ -14,7 +14,19 @@ skills/
 tools/
   sync.ps1            # Windows 同步脚本(推荐)
   sync.sh             # Git Bash 同步脚本
+credentials/
+  registry.md         # 密钥/接口登记表(只存元数据,不含密钥值)
+  .env.local          # 本地密钥值(已 gitignore,不入库)
 ```
+
+## 密钥管理
+
+所有 API 密钥/链接的生命周期由 `credentials-manager` skill 统一管理,登记在 `credentials/registry.md`:
+
+- **密钥值绝不入库**,只放环境变量或本地 `.env.local`
+- **临期提醒**:30 天内到期主动提醒续期
+- **失效 → 废弃**:API 失效后标记 `expired`;确认不再续期则标记 `deprecated` 并禁用关联 skill(SKILL.md → SKILL.md.disabled)
+- **重新启用**:拿到新 key 后更新环境变量、恢复 skill、更新登记表
 
 ## 使用方式
 
@@ -35,3 +47,4 @@ powershell -ExecutionPolicy Bypass -File tools/sync.ps1
 | Skill | 说明 |
 |-------|------|
 | [gemini-api](skills/gemini-api/SKILL.md) | 通过 curl 调用 Google Gemini API 做文本生成、翻译、问答 |
+| [credentials-manager](skills/credentials-manager/SKILL.md) | 集中管理 API 密钥生命周期:登记、临期提醒、失效标记、废弃/重新启用 |

@@ -1,6 +1,6 @@
-# 将仓库 skills/ 下的所有 skill 链接到 ZCode 用户级 skill 目录
-# 用法: powershell -ExecutionPolicy Bypass -File tools/sync.ps1
-# 幂等: 已存在的链接会跳过; 新机器 clone 后跑一次即可
+# Link all skills under skills/ into ZCode's user skill directory.
+# Usage: powershell -ExecutionPolicy Bypass -File tools/sync.ps1
+# Idempotent: existing links are skipped. Run once after cloning on a new machine.
 
 $ErrorActionPreference = "Stop"
 
@@ -8,7 +8,7 @@ $repoRoot = Split-Path -Parent $PSScriptRoot
 $skillsSrc = Join-Path $repoRoot "skills"
 $targets = @(
     (Join-Path $env:USERPROFILE ".zcode\skills")
-    # 如需跨工具(Claude Code 等)共用, 取消下一行注释:
+    # For cross-tool sharing (Claude Code etc.), uncomment:
     # (Join-Path $env:USERPROFILE ".agents\skills")
 )
 
@@ -22,9 +22,9 @@ foreach ($targetDir in $targets) {
         if (Test-Path $link) {
             $item = Get-Item $link
             if ($item.LinkType -eq "Junction" -and $item.Target -contains $skill.FullName) {
-                Write-Host "[skip ] $($skill.Name) 已链接"
+                Write-Host "[skip ] $($skill.Name) already linked"
             } else {
-                Write-Host "[warn ] $($skill.Name) 目标已存在且不是本仓库的链接, 跳过: $link"
+                Write-Host "[warn ] $($skill.Name): path exists and is not a link to this repo, skipped: $link"
             }
             continue
         }
@@ -32,4 +32,4 @@ foreach ($targetDir in $targets) {
         Write-Host "[link ] $($skill.Name) -> $link"
     }
 }
-Write-Host "完成。"
+Write-Host "Done."

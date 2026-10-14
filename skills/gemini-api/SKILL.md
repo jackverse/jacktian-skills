@@ -44,3 +44,4 @@ curl -s --max-time 60 ${GEMINI_PROXY:+-x "$GEMINI_PROXY"} \
 
 - 本技能只做"调用外部 Gemini",不影响 ZCode 自身使用的模型。
 - key 失效或持续 429 时,提示用户到 Google AI Studio 检查 key 状态。
+- 若报错为 401/403、key 无效或明确提示过期:联动 `credentials-manager` skill 做失效标记和续期/废弃处理,不要只把报错丢给用户。

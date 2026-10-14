@@ -1,0 +1,5 @@
+# 密钥值绝不入库
+credentials/.env.local
+*.key
+*.pem
+secrets*
