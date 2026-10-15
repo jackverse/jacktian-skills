@@ -46,5 +46,4 @@ powershell -ExecutionPolicy Bypass -File tools/sync.ps1
 
 | Skill | 说明 |
 |-------|------|
-| [gemini-api](skills/gemini-api/SKILL.md) | 通过 curl 调用 Google Gemini API 做文本生成、翻译、问答 |
 | [credentials-manager](skills/credentials-manager/SKILL.md) | 集中管理 API 密钥生命周期:登记、临期提醒、失效标记、废弃/重新启用 |

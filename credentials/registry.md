@@ -15,9 +15,9 @@
 
 | 名称 | 关联 skill | 环境变量 | 签发日期 | 到期日期 | 状态 | 续期方式 |
 |------|-----------|---------|---------|---------|------|---------|
-| Gemini API Key | gemini-api | `GEMINI_API_KEY` | 2026-10-14 | 待补充(约签发后 1 年) | expired | 到 Google AI Studio 重新生成 key,然后 `setx GEMINI_API_KEY "新key"` 并重启 ZCode,最后更新本表 |
 
 ## 维护记录
 
 - 2026-10-14:建立登记表,迁入 GEMINI_API_KEY。
 - 2026-10-14:用户提供新 Gemini key(AQ.Ab8RN6… 开头),实测返回 403 PERMISSION_DENIED("Your project has been denied access"),key 所属项目被 Google 拒绝访问。**未写入环境变量**,状态标记为 `expired`,待用户在 Google AI Studio 检查项目或重新生成可用 key 后走「重新启用」流程。
+- 2026-10-15:用户决定放弃 Gemini API,`gemini-api` skill 已从仓库和 `~/.zcode/skills` 中删除,Gemini key 条目移除登记。
