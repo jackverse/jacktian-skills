@@ -36,7 +36,7 @@ powershell -ExecutionPolicy Bypass -File tools/sync.ps1
 
 | Skill | 说明 |
 |-------|------|
-| word-template-docs | 按既有 Word 模板批量生成格式一致的新文档（验收四件套/方案/报告）：analyze_docx 模板版式体检 → build_docx 注入 Markdown 正文 → word2pdf 更新目录域转 PDF → pdf2png 渲染+页码单调性校验，附 10 条实战踩坑清单 |
+| word-toolkit | 通用 Word/docx 技能集（原 word-template-docs 升级）：SKILL.md 只做场景路由，专题文档在 references/ 按需加载（模板批量生成 / 修订版反向对齐 / 踩坑清单），新 Word 能力按「沉淀规范」持续补充 |
 
 <!-- 新增 skill 后在此登记一行 -->
 

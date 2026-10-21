@@ -16,3 +16,4 @@
 | 2026-10-21 | third-party-token-proxy | 改 | 踩坑+1：目标平台可能仅「嵌入模式」下读 URL token（spaiEmbedded=1；iframe 参数 embed=1 前端不识别），新标签页打开缺此参数 token 被静默忽略→已鉴权失败但后端 token 正常，需抓目标前端 JS 包定位 token 消费条件 |
 | 2026-10-21 | third-party-token-proxy | 改 | 新增「嵌入/新开第三方平台显示未登录」排查章节：iab 存储按文档隔离（跨导航即清空）、CDP 看不见 window.open 子窗口（tab.goto 复现）、SPAI 前端 JS 包反混淆还原鉴权三处（token 唯一消费点/401 处理器/跨窗口预写存储）+ __spai_console_ring__ 日志环诊断、五步排查方法论、browser-use node_repl API 现状 |
 | 2026-10-21 | （清理） | 删 | 用户盘点后精简：删除 vue-detail-seamless-scroll、gsap-to-waapi-scroll-reveal、quest-collect-task、vue-page-section-extract-dual-mode、third-party-token-proxy（git 历史可找回），仅保留 word-template-docs |
+| 2026-10-21 | word-toolkit | 改 | word-template-docs 升级为通用 Word 技能集并更名：SKILL.md 瘦身为路由表+通用纪律+沉淀规范，原内容拆分到 references/（template-generate / reverse-align / pitfalls）按需加载；description 放宽为一切 docx 任务触发 |
