@@ -12,3 +12,7 @@
 | 2026-10-19 | gsap-to-waapi-scroll-reveal | 增 | GSAP 滚动入场/交错/hover 回弹到 WAAPI+IO+CSS 的无依赖迁移，含防闪现、播完释放与 reduced-motion |
 | 2026-10-19 | quest-collect-task | 增 | quest starter 采集任务（collect_task）接入：CollectServiceImpl 双签名、rawStream 原始流透传、TB_QUEST_CONFIG 登记规则、upload-max-size 字节数与 multipart 双上限坑 |
 | 2026-10-20 | vue-page-section-extract-dual-mode | 增 | Vue 长页板块抽组件+嵌入/独立双形态复用（number/limit/moreTo props、组件自持依赖、竞态 token 隔离、hash 路由新标签、pageStatMap 登记） |
+| 2026-10-20 | third-party-token-proxy | 增 | 第三方平台 client_credentials 后端换票接入：yml 持凭证、JDK HttpClient 登录、按 token 剩余有效期缓存 Redis（exp 解析失败兜底+Redis 故障降级直登）、端点返回拼好 URL、旧静态 token 幂等 REPLACE 清理（源自 SPAI 检索改造） |
+| 2026-10-21 | third-party-token-proxy | 改 | 踩坑+1：目标平台可能仅「嵌入模式」下读 URL token（spaiEmbedded=1；iframe 参数 embed=1 前端不识别），新标签页打开缺此参数 token 被静默忽略→已鉴权失败但后端 token 正常，需抓目标前端 JS 包定位 token 消费条件 |
+| 2026-10-21 | third-party-token-proxy | 改 | 新增「嵌入/新开第三方平台显示未登录」排查章节：iab 存储按文档隔离（跨导航即清空）、CDP 看不见 window.open 子窗口（tab.goto 复现）、SPAI 前端 JS 包反混淆还原鉴权三处（token 唯一消费点/401 处理器/跨窗口预写存储）+ __spai_console_ring__ 日志环诊断、五步排查方法论、browser-use node_repl API 现状 |
+| 2026-10-21 | （清理） | 删 | 用户盘点后精简：删除 vue-detail-seamless-scroll、gsap-to-waapi-scroll-reveal、quest-collect-task、vue-page-section-extract-dual-mode、third-party-token-proxy（git 历史可找回），仅保留 word-template-docs |

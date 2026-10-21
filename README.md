@@ -37,10 +37,6 @@ powershell -ExecutionPolicy Bypass -File tools/sync.ps1
 | Skill | 说明 |
 |-------|------|
 | word-template-docs | 按既有 Word 模板批量生成格式一致的新文档（验收四件套/方案/报告）：analyze_docx 模板版式体检 → build_docx 注入 Markdown 正文 → word2pdf 更新目录域转 PDF → pdf2png 渲染+页码单调性校验，附 10 条实战踩坑清单 |
-| vue-detail-seamless-scroll | 看板明细限高自动慢滚+滚轮手动快滚+无缝循环的原生滚动指令模式与取整/误判坑 |
-| gsap-to-waapi-scroll-reveal | GSAP 滚动入场/交错/hover 回弹到 WAAPI+IO+CSS 的无依赖迁移，含防闪现、播完释放与 reduced-motion |
-| quest-collect-task | quest starter 采集任务（collect_task）接入：CollectServiceImpl 双签名、rawStream 原始流透传、TB_QUEST_CONFIG 登记规则、上传体积双上限坑 |
-| vue-page-section-extract-dual-mode | Vue 长页板块抽组件+嵌入/独立双形态复用（number/limit/moreTo props、组件自持依赖、竞态 token 隔离、hash 路由新标签、pageStatMap 登记） |
 
 <!-- 新增 skill 后在此登记一行 -->
 
