@@ -5,6 +5,7 @@
 ## 目录结构
 
 ```
+AGENTS.md           # 全局规范源头(~/.zcode/AGENTS.md 由 sync.ps1 从此拷贝)
 skills/
   <skill-name>/
     SKILL.md          # 必需:YAML frontmatter (name, description) + 正文
@@ -12,7 +13,7 @@ skills/
     scripts/          # 可选:辅助脚本
     assets/           # 可选:模板、示例等
 tools/
-  sync.ps1            # Windows 同步脚本(推荐)
+  sync.ps1            # Windows 同步脚本(推荐):skill 建 junction + AGENTS.md 拷贝
   sync.sh             # Git Bash 同步脚本
 ```
 
@@ -31,6 +32,8 @@ powershell -ExecutionPolicy Bypass -File tools/sync.ps1
 ```
 
 **新增 skill**:在 `skills/` 下新建目录并编写 `SKILL.md`(可用 ZCode 的 skill-creator 辅助),然后跑一次同步脚本建立链接,提交推送即可。
+
+**修改全局规范**(AGENTS.md):改仓库里的 `AGENTS.md` → 跑一次同步脚本拷贝到 `~/.zcode/AGENTS.md` → 提交推送。用户级副本不要手改,会被覆盖。
 
 ## 功能索引(当前有哪些能力)
 

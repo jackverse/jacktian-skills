@@ -13,13 +13,14 @@ description: 通用 Word/docx 文档处理技能集:按模板批量生成、格�
 |------|--------|---------|
 | 按既有模板批量生成格式一致的新文档(验收/方案/报告/手册等) | [references/template-generate.md](references/template-generate.md) | analyze_docx.py、build_docx.py、word2pdf.py、pdf2png.py |
 | 参考用户手工修订过的 done- 版,反向对齐同套其他文档 | [references/reverse-align.md](references/reverse-align.md) | 同上 |
+| 给文档里的 ::IMG:: 截图占位框回填真实图片 | [references/img-backfill.md](references/img-backfill.md) | fill_img_placeholders.py |
 | 排查 docx 诡异问题(页码断链、目录"长出来"、字体缩进漂移、表格变丑等) | [references/pitfalls.md](references/pitfalls.md) | 按条目所指 |
 | 新沉淀的 Word 能力 | 见文末「沉淀规范」 | — |
 
 ## 通用纪律(所有场景适用)
 
 1. **先分析后动手**:处理前先跑 `analyze_docx.py` 读版式事实(样式、分节、域、表格结构、隐藏域),不靠肉眼猜。
-2. **校验不目测**:交付前 `word2pdf.py` → `pdf2png.py` 渲染;页码单调性用 `--footers` 脚本判定,勿肉眼读渲染图上的小字号页脚;残留检查用 zipfile 直读 document.xml。
+2. **校验不目测**:交付前先做产物 vs 源 md 对账(标题大纲+全文,见 template-generate「内容对账」),再 `word2pdf.py` → `pdf2png.py` 渲染;页码单调性用 `--footers` 脚本判定,勿肉眼读渲染图上的小字号页脚;残留检查用 zipfile 直读 document.xml。
 3. **内容不编造**:数字/人名/URL 只能来自用户提供的事实材料;没有的写"以实际部署环境为准"。
 4. **用户手工改过的文件绝不重建**,只更新域;同套其他文件重建前先备份。
 
@@ -34,4 +35,4 @@ description: 通用 Word/docx 文档处理技能集:按模板批量生成、格�
 2. 上方路由表登记一行(场景 | 读哪个 | 用什么脚本);新脚本放 `scripts/`,并在本文件的「环境」补依赖说明
 3. 踩坑经验一律追加到 `references/pitfalls.md`,编号延续不重排
 4. `LOG.md` 追加一行台账(改 | 一句话说明)
-5. 提交推送
+5. 是否 git commit/push 由用户决定,不擅自提交

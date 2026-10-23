@@ -23,4 +23,12 @@ for target_dir in "${TARGETS[@]}"; do
     echo "[link ] $name -> $link"
   done
 done
+
+# Sync AGENTS.md: repo is the source of truth, copy to user-level (~/.zcode/AGENTS.md).
+AGENTS_SRC="$REPO_ROOT/AGENTS.md"
+AGENTS_DST="$USERPROFILE/.zcode/AGENTS.md"
+if [ -f "$AGENTS_SRC" ]; then
+  cp -f "$AGENTS_SRC" "$AGENTS_DST"
+  echo "[copy ] AGENTS.md -> $AGENTS_DST"
+fi
 echo "完成。"

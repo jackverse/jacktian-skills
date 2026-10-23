@@ -699,17 +699,12 @@ def main():
 
         tbl = Table(rev_tbl, doc)
         vals = [args.rev_ver, args.rev_date, args.rev_desc, args.rev_author, "", ""]
+        # 清空全部数据行后把新记录写到第一个数据行。不要按"第一个空行"定位写入：
+        # 空白备用行通常排在表尾,按空行找会把新记录写到最后一行。
         data_rows = tbl.rows[3:]
-        target = None
         for ri, row in enumerate(data_rows):
-            if all(not c.text.strip() for c in row.cells):
-                if target is None:
-                    target = row
-                    for ci, cell in enumerate(row.cells):
-                        cell.paragraphs[0].text = vals[ci] if ci < len(vals) else ""
-                continue
             for ci, cell in enumerate(row.cells):
-                cell.paragraphs[0].text = ""
+                cell.paragraphs[0].text = (vals[ci] if ci < len(vals) else "") if ri == 0 else ""
 
     replace_everywhere(doc, mapping)
     set_update_fields(doc)

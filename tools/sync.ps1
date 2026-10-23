@@ -32,4 +32,13 @@ foreach ($targetDir in $targets) {
         Write-Host "[link ] $($skill.Name) -> $link"
     }
 }
+
+# Sync AGENTS.md: repo is the source of truth, copy to user-level (~/.zcode/AGENTS.md).
+# (File symlinks on Windows require admin; junctions are directories-only, so copy.)
+$agentsSrc = Join-Path $repoRoot "AGENTS.md"
+$agentsDst = Join-Path $env:USERPROFILE ".zcode\AGENTS.md"
+if (Test-Path $agentsSrc) {
+    Copy-Item $agentsSrc $agentsDst -Force
+    Write-Host "[copy ] AGENTS.md -> $agentsDst"
+}
 Write-Host "Done."
