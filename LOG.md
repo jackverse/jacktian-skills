@@ -38,3 +38,4 @@
 | 2026-10-28 | word-toolkit | 改 | pitfalls 新增 26-27：旧底稿覆盖对账（patch 前全文扫描核对已确认口径，丢失先说明再定点手术补回）、docx 表格整表重排（表头定位+排列断言+tr 移除重插+set_cell 保格式+save 前异常安全） |
 | 2026-10-28 | word-toolkit | 改 | 新增无 Python 环境 Node.js+JSZip 直改现有 docx 专题（references/node-editing.md + scripts/docx_xml_edit.js）：run 拆分探测、稳定锚点、段/表/行范围替换与行重写防 tr 嵌套、按次数替换断言、XML 标签配对校验+history 备份+产物复读对账，pitfalls+28-32（源自中期验收报告编辑实战） |
 | 2026-10-29 | （结构） | 改 | 通用技能按类目归档：skills/ 下分 word/（word-toolkit、quest-poi-tl-word-export）与 frontend/（vue3/vue-hash-to-history、vite/vite-dep-worker-import、browser-tuning/browser-anim-screenshot-verify+browser-interaction-verify），版本互斥经验再建版本子目录；sync.ps1 第一阶段改递归发现 SKILL.md+挪位自动重定向 junction；生效目录仍平铺、skill 目录名不变 |
+| 2026-10-29 | docx-table-borders-and-split | 增 | docx 表格全框线批量修复（python-docx+lxml 重建六边 tblBorders、排除 1×1 截图容器表、清 tcBorders 防覆盖）+ 按章节拆分多份读者手册（复制+H1 边界删章、保首 run 改封面/引言、UNO 刷 TOC、soffice.com 转 PDF + fitz 目检）+ Windows 坑（python 被 WindowsApps 劫持、UNO 独立 profile、~$ 锁文件不杀 Word）+ 读者视角裁剪原则 |
