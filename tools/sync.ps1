@@ -57,7 +57,10 @@ if (Test-Path $projectsSrc) {
             $label = "$($projDir.Name)/$($skill.Name)"
             $skillMd = Join-Path $skill.FullName "SKILL.md"
             if (-not (Test-Path $skillMd)) { Write-Host "[warn ] ${label}: no SKILL.md, skipped"; continue }
-            $head = (Get-Content $skillMd -TotalCount 20) -join "`n"
+            # -Encoding UTF8: PS5.1 defaults to ANSI/GBK; reading UTF-8 (no BOM) SKILL.md with a long
+            # CJK description can swallow the newline of the description line (byte-pair misalignment),
+            # gluing 'project:' onto it so the ^project: anchor below fails -> skill wrongly skipped.
+            $head = (Get-Content $skillMd -TotalCount 20 -Encoding UTF8) -join "`n"
             $m = [regex]::Match($head, '(?m)^project:\s*(.+?)\s*$')
             if (-not $m.Success) { Write-Host "[warn ] ${label}: frontmatter missing 'project:', skipped"; continue }
             $projectRoot = [Environment]::ExpandEnvironmentVariables($m.Groups[1].Value.Trim())
