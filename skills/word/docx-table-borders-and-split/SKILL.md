@@ -9,14 +9,17 @@ description: docx 表格全框线批量修复与按章节拆分成多份手册:�
 
 ## A. 批量修复表格全框线(python-docx)
 
-场景:验收交付文档(自测报告/试运行方案/操作手册)要求数据表格全框线,但模板样式或手工编辑导致部分表只有横线、无竖线/外框。
+场景:验收交付文档(自测报告/试运行方案/操作手册)要求数据表格全框线,但模板样式或手工编辑导致部分表只有横线、无竖线/外框。**生成场景同样必须全框**:新建文档、重建正文与编辑旧文档都适用,不能只把本规则当作事后修复手段。
 
 要点:
+- **新建表与保留表都要查**:新建速查表/对照表,以及从旧文档原样保留的环境表等,全部必须六边全框。边框检查覆盖文档内全部数据表,不得只查本次新建或修改的表;曾出现新表已加框、保留的"用户使用环境要求"表漏框的交付问题。
 - python-docx **没有 borders API**,直接用 lxml 操作 `table._tbl.tblPr`。
-- 逐表检查 `tblPr` 里的 `w:tblBorders`:元素不存在、或任一边 `w:val` 为 `none`/`nil`,就整体重建。
+- 逐表检查 `tblPr` 里的 `w:tblBorders`:元素不存在、六边缺任一边、或任一边不是 `single sz=4`,就整体重建。
 - 完整六边:`top/left/bottom/right/insideH/insideV`,全部 `w:val="single" w:sz="4" w:space="0" w:color="000000"`。`sz` 单位是 1/8 pt,**sz=4 即 0.5pt 细实线**,验收文档常用。
+- **插入顺序**:`tblBorders` 位于 `tblPr` 内,若存在 `tblLayout` 必须插到它之前,不能一律追加到末尾。
 - **排除图片容器表**:1×1 且内含 `w:drawing` 的表通常是截图的边框容器,保持无边框,否则截图会被套一圈黑框。
 - **单元格级 `w:tcBorders` 覆盖表级 `w:tblBorders`**:只修表级会被个别单元格的旧框线"顶掉",修复时把 `tcBorders` 一并清掉或统一。
+- **交付前独立复核**:可用 Word COM 遍历 `Tables` 检查四边外框 `Borders` 的 `LineStyle`,或在 XML 层断言每个数据表 `w:tbl` 的 `tblPr` 均含 `tblBorders` 且六边为 `single sz=4`;复核范围仍是全文档,包含原样保留表。
 
 可直接复用的函数:
 
@@ -35,21 +38,28 @@ def is_image_container(table):
     return bool(tbl.findall('.//' + qn('w:drawing')))
 
 def borders_broken(tblPr):
-    """tblBorders 缺失,或任一边 val 为 none/nil,视为需修复"""
+    """缺 tblBorders、缺任一边,或任一边不是 single sz=4,均视为需修复"""
     borders = tblPr.find(qn('w:tblBorders'))
     if borders is None:
         return True
-    for e in borders:
-        if e.get(qn('w:val')) in ('none', 'nil'):
+    for edge in EDGES:
+        e = borders.find(qn('w:' + edge))
+        if (e is None or e.get(qn('w:val')) != 'single'
+                or e.get(qn('w:sz')) != '4'):
             return True
     return False
 
 def rebuild_full_borders(tblPr, sz='4', color='000000'):
-    """整体重建六边全框线(先删旧再建,避免新旧混杂)"""
+    """整体重建六边全框线;tblBorders 必须位于 tblLayout 之前"""
     old = tblPr.find(qn('w:tblBorders'))
     if old is not None:
         tblPr.remove(old)
-    borders = etree.SubElement(tblPr, qn('w:tblBorders'))
+    borders = etree.Element(qn('w:tblBorders'))
+    tblLayout = tblPr.find(qn('w:tblLayout'))
+    if tblLayout is not None:
+        tblLayout.addprevious(borders)
+    else:
+        tblPr.append(borders)
     for edge in EDGES:
         e = etree.SubElement(borders, qn('w:' + edge))
         e.set(qn('w:val'), 'single')

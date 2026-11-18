@@ -4,9 +4,10 @@
 
 | 子目录 | 范围 | 现有 skill |
 |--------|------|-----------|
-| vue3/ | Vue 3 通用(Composition API、vue-router、Pinia 等) | vue-hash-to-history |
+| vue3/ | Vue 3 通用(Composition API、vue-router、Pinia 等) | vue-hash-to-history、public-asset-baseurl、json-config-editor、save-confirm-diff-dialog |
 | vite/ | Vite 构建工具链 | vite-dep-worker-import |
 | browser-tuning/ | 浏览器调优:截图/交互验证失真排查、渲染性能、调试 | browser-anim-screenshot-verify、browser-interaction-verify |
+| charts/ | 看板/报表图表开发与排障:echarts 复现、数据口径核查、实例生命周期 | chart-anomaly-rootcause-repro、echarts-instance-replace-blank |
 
 ## 约定
 

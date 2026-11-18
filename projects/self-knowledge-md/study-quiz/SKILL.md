@@ -1,10 +1,10 @@
 ---
 name: study-quiz
 project: D:\jack\self-knowledge-md
-description: 维护与使用该笔记仓库的刷题工具 tools/study/（科目即目录的 JSONL 题库 + 间隔复习）。当用户要求出题、建题库、导入题目、组卷测验、查正确率，或需要重新打包/升级 study.exe 时使用。
+description: 维护与使用该笔记仓库的刷题工具 tools/study/（科目即目录的 JSONL 题库 + 间隔复习）。当用户要求出题、建题库、导入题目、组卷测验、查正确率时使用。
 ---
 
-# Skill: 刷题工具（study.py / study.exe）
+# Skill: 刷题工具（study.py + hub 界面）
 
 **一句话**：题库是数据（`notes/kb/<科目>/questions.jsonl`），工具是代码（`tools/study/`）。出题不改代码，加科目只建目录，改题不用重新打包。
 
@@ -26,8 +26,6 @@ python tools/study/study.py <科目> review       # 复习今日到期
 python tools/study/study.py <科目> import f.jsonl
 python tools/study/study.py <科目> stats
 ```
-
-exe：`tools/study/app/study.exe`（onedir，已入库，免装 Python）。
 
 ## 出题规范（生成题库必须遵守）
 
@@ -74,7 +72,7 @@ exe：`tools/study/app/study.exe`（onedir，已入库，免装 Python）。
 
 # GUI 版：tools/hub（超级 exe）
 
-同一套题库/进度，外面包了一层 tkinter 窗口：`tools/hub/`，产物 `tools/hub/app/hub.exe`（onedir、--windowed、约 28.5MB）。六页全部懒加载：首页 / 笔记 / **健身** / 刷题 / 错题本 / 统计。
+同一套题库/进度，外面包了一层 tkinter 窗口：`tools/hub/`，产物在**仓库根目录**：`hub.exe` + `.hub\`（onedir、--windowed）。七页全部懒加载：首页 / 笔记 / 健身 / 刷题 / 错题本 / 统计 / 设置。
 
 **「健身」页是派生视图，不是新数据源**：只读解析 `notes/daily-log.md` 的月度表格（认表头不认列位置、`—`=未报、剥 `**加粗**`），算出连续记录/训练休息/打卡率/体重曲线(7 日均线)/30 天热力格/部位分布。要加指标只给日报**加列**，往期补 `—`，**不要新建 md**——用户明确说过不愿增加维护成本。
 
@@ -86,6 +84,8 @@ python tools/hub/hub.py --selftest       # 构建全部页面后退出（回归�
 
 **懒加载机制**：`hub.py` 的 `PAGES` 只存模块名，点击时才 `importlib.import_module`，Frame 缓存复用；状态栏显示"已加载页面"便于验证。新增页面 = 加一个 `pages/xxx.py`（导出 `make()`）+ 在 `PAGES` 登记 + 在 `build.ps1` 加 `--hidden-import pages.xxx`。
 
+**侧栏排序 = 真实浏览统计**：`core/usage.py` 每次 `goto()` 记一次访问，存 `%APPDATA%\self-knowledge-hub\usage.json`（`{total,last,hits[]}`，不进仓库）；三种模式（最近 7 天 / 总次数 / 默认权重）点标题下「排序：… ⇄」切换并记住；卡片右上角显示累计次数。`--selftest` 不记录，避免自检刷歪。
+
 ## GUI 打包的三个坑（通用）
 
 | 坑 | 现象 | 解法 |
@@ -93,6 +93,7 @@ python tools/hub/hub.py --selftest       # 构建全部页面后退出（回归�
 | 动态 import 扫不到 | exe 里点第二页 `ModuleNotFoundError` | `build.ps1` 逐页 `--hidden-import` |
 | 一次静态 import 拖来半个生态 | 包从 28MB 涨到 71MB | 开发用依赖（如 `PIL.ImageGrab` 截图）改用 `__import__` 动态导入 + `--exclude-module numpy/PIL/...` |
 | `--windowed` 没有 stdout | `print` 弹错误框、进程挂死 | 自检结果写文件（环境变量传路径），`print` 包 try/except |
+| 构建前删除失败但继续拷贝 | 产出半残 exe（`No module named 'encodings'`） | 先 `Stop-Process`、删除重试 6 次、校验产物文件数 |
 
-验证打包版：`cmd /c start "" app\hub.exe` 分离启动后查窗口标题；或用 `HUB_SELFTEST_OUT=<文件>` 跑 `--selftest` 再读文件。**不要用 `Start-Process -Wait`**（windowed 进程会被等挂）。
+验证打包版：`cmd /c start "" hub.exe` 分离启动后查窗口标题；或用 `HUB_SELFTEST_OUT=<文件>` 跑 `--selftest` 再读文件。**不要用 `Start-Process -Wait`**（windowed 进程会被等挂）。
 

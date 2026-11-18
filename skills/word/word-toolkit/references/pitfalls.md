@@ -116,3 +116,17 @@
 32. **Node.js 直改 docx 的收尾不能省**:写回前做栈式 XML 标签配对校验(忽略声明/注释/CDATA/自闭合),
     默认备份到 history;写回后重新 JSZip 打开落盘产物、提取全文核对关键数字与口径,并对照操作日志。
     样式原型(tblPr/tcW/pPr/rPr 等)从当前文档克隆,不跨模板硬编码。
+33. **python-docx 游标插入:addnext 是"插到锚点之后",想"插到某章标题之前"必须 addprevious
+    且游标不前移**:误用 after 模式(addnext+游标前移)时,第一个新元素插在锚章标题之后、
+    后续内容接在其后——整章新内容插进"原章标题与原章正文之间",脚本不报任何错。现成封装
+    docxkit.py 的 `Inserter(doc, anchor, before=True)`;识别靠交付前重建大纲对账(新章标题出现在
+    锚章标题之后、原章正文挂到新章名下、连带自动编号错位)。详见 existing-docx-restructure.md。
+34. **python-docx 按名取样式有 BabelFish 翻译盲区**:styles.xml 里 w:name 可能是小写
+    'heading 1',python-docx 的内置翻译表未必覆盖自建/改名模板,`styles['Heading 1']` 直接
+    KeyError。get_style 先精确名再 name.lower() 兜底遍历(docxkit.py 已内置);同类问题也
+    解释了 JSZip 路线 styleId 是数字、必须建 id→name 映射(第 1 条)。
+35. **网页内嵌 mp4 的 src 直接拼域名常 404**:SSR 页面 `<video><source src="/video/x.mp4">`
+    是相对应用根的路径,真实地址往往带应用前缀(如 /techscore/video/x.mp4),逐候选前缀
+    curl -I 试;抽帧配图先 cv2 每 2 秒抽帧拼带秒号标签的 contact sheet 选题,再**看整帧定
+    裁剪框**(黑边/字幕条/播放器控件)后 crop,JPEG 92% 存盘。详见
+    existing-docx-restructure.md 附节。

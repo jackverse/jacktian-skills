@@ -10,6 +10,7 @@ skills/             # 通用技能,按分类归档(分类规则见各分类目�
   word/                       # Word 文档类
   frontend/                   # 前端类
     vue3/ vite/ browser-tuning/   # 按框架/工具/主题细分,版本互斥再建版本子目录
+  backend/                    # 后端类(Maven/构建/后端调试)
   <分类>/<skill-name>/
     SKILL.md          # 必需:YAML frontmatter (name, description) + 正文
     references/       # 可选:按需加载的详细文档
@@ -69,6 +70,18 @@ powershell -ExecutionPolicy Bypass -File tools/sync.ps1
 |-------|------|------|
 | browser-anim-screenshot-verify | 截图视觉验证失真排查:入场动画冻结帧、截图发白、getAnimations 快进 | [SKILL.md](skills/frontend/browser-tuning/browser-anim-screenshot-verify/SKILL.md) |
 | browser-interaction-verify | 内嵌浏览器行为验证失真:滚动/rAF/定时器/点击超时的判别与替代验证法 | [SKILL.md](skills/frontend/browser-tuning/browser-interaction-verify/SKILL.md) |
+
+### backend — 后端类
+
+| Skill | 功能 | 入口 |
+|-------|------|------|
+| maven-wip-compile-verify | 工作区 WIP 文件挡住 Maven 编译时的只读验证:引用面确认 → git stash -u 临时排除 → 重编译 → pop 完整还原 | [SKILL.md](skills/backend/maven-wip-compile-verify/SKILL.md) |
+
+### tools — 独立小工具类
+
+| Skill | 功能 | 入口 |
+|-------|------|------|
+| go-win-tray-exe | Go 单文件 Windows 托盘提醒 EXE 管线(托盘+toast 定时提醒+WebView2 原生窗口面板+JSON 热加载+开机自启+单实例,8 条坑) | [SKILL.md](skills/tools/go-win-tray-exe/SKILL.md) |
 
 > 项目专用技能在 `projects/` 下按项目归档,不在此列。
 
